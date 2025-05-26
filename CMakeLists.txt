@@ -1,0 +1,46 @@
+cmake_minimum_required(VERSION 3.21)
+project(bitvector)
+
+set(CMAKE_CXX_STANDARD 17)
+if(MSVC)
+  # Set compiler flags for all configurations
+  #add_compile_options("/O2" "/Zi" "/DEBUG")
+
+  # Or, specify flags based on the build type
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /Zi /DEBUG")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /DEBUG")
+endif()
+
+# Enable testing
+enable_testing()
+
+# FetchContent for Google Test (GTest)
+include(FetchContent)
+FetchContent_Declare(
+    gtest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG release-1.11.0  # or use 'master' for latest version
+)
+
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+# Download and build Google Test
+FetchContent_MakeAvailable(gtest)
+
+add_executable(bitvector main.cpp
+        sieve3.cpp
+        sieve3.hpp)
+
+
+# Link your project with Google Test (only for test purposes)
+add_executable(PrimeIteratorTests test_prime_iterator.cpp)
+
+# Link the Google Test libraries with your test executable
+target_link_libraries(PrimeIteratorTests GTest::gtest_main)
+
+# Optionally: Add your own project dependencies or source files
+# target_sources(MyProjectTests PRIVATE test_main.cpp)
+
+# Enable test discovery
+include(GoogleTest)
+gtest_discover_tests(PrimeIteratorTests)
