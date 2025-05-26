@@ -1,5 +1,4 @@
 #include "bitvector.hpp"
-#include "sieve3.hpp"
 #include <cassert>
 #include <chrono>
 #include <iostream>

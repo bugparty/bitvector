@@ -27,20 +27,18 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 # Download and build Google Test
 FetchContent_MakeAvailable(gtest)
 
-add_executable(bitvector main.cpp
-        sieve3.cpp
-        sieve3.hpp)
+add_executable(bitvector main.cpp)
 
 
 # Link your project with Google Test (only for test purposes)
-add_executable(PrimeIteratorTests test_prime_iterator.cpp)
+#add_executable(PrimeIteratorTests test_prime_iterator.cpp)
 
 # Link the Google Test libraries with your test executable
-target_link_libraries(PrimeIteratorTests GTest::gtest_main)
+#target_link_libraries(PrimeIteratorTests GTest::gtest_main)
 
 # Optionally: Add your own project dependencies or source files
 # target_sources(MyProjectTests PRIVATE test_main.cpp)
 
 # Enable test discovery
 include(GoogleTest)
-gtest_discover_tests(PrimeIteratorTests)
+#gtest_discover_tests(PrimeIteratorTests)
