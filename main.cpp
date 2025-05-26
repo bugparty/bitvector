@@ -3,10 +3,11 @@
 #include <chrono>
 #include <iostream>
 #include <vector>
-
+constexpr size_t SIZE = 1000000000;  // 10 million elements
 // Benchmarks the performance of std::vector<bool> for setting, accessing, and traversing elements.
 void benchmarkStdVectorBool(){
-    constexpr size_t SIZE = 10000000;  // 10 million elements
+
+    std::cout << "Benchmarking std::vector<bool>..." << std::endl;
 
     // Define a vector<bool>
     std::vector<bool> bool_vector(SIZE);
@@ -14,11 +15,11 @@ void benchmarkStdVectorBool(){
     // Time setting each element to true
     auto start_set = std::chrono::high_resolution_clock::now();
     for (size_t i = 0; i < SIZE; ++i) {
-        bool_vector[i] = i&0x1;
+        bool_vector[i] = i & 0x1;
     }
     auto end_set = std::chrono::high_resolution_clock::now();
     auto duration_set = std::chrono::duration_cast<std::chrono::milliseconds>(end_set - start_set);
-    std::cout << "Setting all elements took " << duration_set.count() << " milliseconds.\\n";
+    std::cout << "[std::vector<bool>] Setting all elements took " << duration_set.count() << " milliseconds." << std::endl;
 
     // Time accessing each element
     size_t true_count = 0;
@@ -30,7 +31,7 @@ void benchmarkStdVectorBool(){
     }
     auto end_access = std::chrono::high_resolution_clock::now();
     auto duration_access = std::chrono::duration_cast<std::chrono::milliseconds>(end_access - start_access);
-    std::cout << "Accessing all elements took " << duration_access.count() << " milliseconds.\\n";
+    std::cout << "[std::vector<bool>] Accessing all elements took " << duration_access.count() << " milliseconds." << std::endl;
 
     // Time traversing the entire vector
     auto start_traverse = std::chrono::high_resolution_clock::now();
@@ -41,15 +42,15 @@ void benchmarkStdVectorBool(){
     }
     auto end_traverse = std::chrono::high_resolution_clock::now();
     auto duration_traverse = std::chrono::duration_cast<std::chrono::milliseconds>(end_traverse - start_traverse);
-    std::cout << "Traversing all elements took " << duration_traverse.count() << " milliseconds.\\n";
+    std::cout << "[std::vector<bool>] Traversing all elements took " << duration_traverse.count() << " milliseconds." << std::endl;
 
-    std::cout << "True count: " << true_count << "\\\\n";
-
+    std::cout << "[std::vector<bool>] True count: " << true_count << std::endl;
 }
 
 // Benchmarks the performance of bowen::bitvector for setting, assigning, accessing, and traversing elements.
 void benchmarkBowenBitvector(){
-    constexpr size_t SIZE = 10000000;  // 10 million elements
+
+    std::cout << "Benchmarking bowen::bitvector..." << std::endl;
 
     // Define a bitvector
     bowen::bitvector bool_vector(SIZE);
@@ -57,19 +58,20 @@ void benchmarkBowenBitvector(){
     // Time setting each element
     auto start_set = std::chrono::high_resolution_clock::now();
     for (size_t i = 0; i < SIZE; ++i) {
-        bool_vector[i] = i&0x1;
+        bool_vector[i] = i & 0x1;
     }
     auto end_set = std::chrono::high_resolution_clock::now();
     auto duration_set = std::chrono::duration_cast<std::chrono::milliseconds>(end_set - start_set);
-    std::cout << "Setting all elements took " << duration_set.count() << " milliseconds.\\n";
+    std::cout << "[bowen::bitvector] Setting all elements took " << duration_set.count() << " milliseconds." << std::endl;
 
-        // Time setting each element using assign
+    // Time setting each element using assign
     auto start_assign = std::chrono::high_resolution_clock::now();
     bowen::bitvector vector2;
     vector2.assign(SIZE, 1);
     auto end_assign = std::chrono::high_resolution_clock::now();
     auto duration_assign = std::chrono::duration_cast<std::chrono::milliseconds>(end_assign - start_assign);
-    std::cout << "assign all elements took " << duration_assign.count() << " milliseconds.\\n";
+    std::cout << "[bowen::bitvector] Assigning all elements took " << duration_assign.count() << " milliseconds." << std::endl;
+
     // Time accessing each element
     size_t true_count = 0;
     auto start_access = std::chrono::high_resolution_clock::now();
@@ -80,7 +82,7 @@ void benchmarkBowenBitvector(){
     }
     auto end_access = std::chrono::high_resolution_clock::now();
     auto duration_access = std::chrono::duration_cast<std::chrono::milliseconds>(end_access - start_access);
-    std::cout << "Accessing all elements took " << duration_access.count() << " milliseconds.\\n";
+    std::cout << "[bowen::bitvector] Accessing all elements took " << duration_access.count() << " milliseconds." << std::endl;
 
     // Time traversing the entire vector
     auto start_traverse = std::chrono::high_resolution_clock::now();
@@ -91,14 +93,13 @@ void benchmarkBowenBitvector(){
     }
     auto end_traverse = std::chrono::high_resolution_clock::now();
     auto duration_traverse = std::chrono::duration_cast<std::chrono::milliseconds>(end_traverse - start_traverse);
-    std::cout << "Traversing all elements took " << duration_traverse.count() << " milliseconds.\\n";
+    std::cout << "[bowen::bitvector] Traversing all elements took " << duration_traverse.count() << " milliseconds." << std::endl;
 
-    std::cout << "True count: " << true_count << "\\n";
+    std::cout << "[bowen::bitvector] True count: " << true_count << std::endl;
 }
 
 // Compares the behavior of bowen::bitvector against std::vector<bool> for basic operations.
 void testBitvectorAgainstStdVectorBool(){
-    constexpr size_t SIZE = 10000000;  // 10 million elements
 
     // Define a bitvector and a vector<bool>
     bowen::bitvector bool_vector1(SIZE);
@@ -111,7 +112,7 @@ void testBitvectorAgainstStdVectorBool(){
     }
     auto end_set = std::chrono::high_resolution_clock::now();
     auto duration_set = std::chrono::duration_cast<std::chrono::milliseconds>(end_set - start_set);
-    std::cout << "Setting all elements took " << duration_set.count() << " milliseconds.\\n";
+    std::cout << "Setting all elements took " << duration_set.count() << " milliseconds." << std::endl;
     assert(bool_vector1.size()==bool_vector2.size());
     assert(bool_vector1.empty() == bool_vector2.empty());
     // Time accessing each element and comparing
@@ -124,8 +125,8 @@ void testBitvectorAgainstStdVectorBool(){
     }
     auto end_access = std::chrono::high_resolution_clock::now();
     auto duration_access = std::chrono::duration_cast<std::chrono::milliseconds>(end_access - start_access);
-    std::cout << "Accessing all elements took " << duration_access.count() << " milliseconds.\\n";
-    std::cout << "found "<< false_count<< " error in bitvector" <<std::endl;
+    std::cout << "Accessing all elements took " << duration_access.count() << " milliseconds." << std::endl;
+    std::cout << "found " << false_count << " error in bitvector" << std::endl;
 
 
 }
@@ -159,14 +160,28 @@ void testBitvectorIncrementUntilZero(){
     assert(count == correct_count);
 }
 
-void runAllTests() {
-    testBitvectorAgainstStdVectorBool();
-    testBitvectorIncrementUntilZero();
+void calculateSpeedup(double std_time, double bowen_time) {
+    double speedup = std_time / bowen_time;
+    std::cout << "Speedup (std::vector<bool> vs bowen::bitvector): " << speedup << "x" << std::endl;
 }
 
 int main() {
+    // Benchmark std::vector<bool>
+    auto start_std = std::chrono::high_resolution_clock::now();
     benchmarkStdVectorBool();
+    auto end_std = std::chrono::high_resolution_clock::now();
+    double std_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_std - start_std).count();
+
+    // Benchmark bowen::bitvector
+    auto start_bowen = std::chrono::high_resolution_clock::now();
     benchmarkBowenBitvector();
-    runAllTests();
+    auto end_bowen = std::chrono::high_resolution_clock::now();
+    double bowen_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_bowen - start_bowen).count();
+
+    // Calculate and print speedup
+    calculateSpeedup(std_time, bowen_time);
+
+    // Run all tests
+
     return 0;
 }

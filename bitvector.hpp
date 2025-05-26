@@ -1,16 +1,18 @@
 #ifndef BITVECTOR_H
 #define BITVECTOR_H
 
-#include <cstddef>
-#include <iterator>
 #include <algorithm>
-#include <initializer_list>
-#include <stdexcept>
-#include <sstream>
-#include <memory>
+#include <cstddef>
 #include <cstring>
+#include <initializer_list>
+#include <iterator>
+#include <limits>
+#include <memory>
 #include <nmmintrin.h>
-#include <immintrin.h>
+#include <sstream>
+#include <stdexcept>
+#include <simde/x86/avx2.h>
+#include <simde/x86/avx512.h>
 namespace bowen
 {
     template<typename T,unsigned int ALIGN_SIZE=32>
@@ -77,9 +79,13 @@ namespace bowen
         }
     };
     template<typename Allocator = MMAllocator<BitType>>
-    class BitIterator
-        : public std::iterator<std::random_access_iterator_tag, bool>
-    {
+    class BitIterator {
+        using iterator_category = std::random_access_iterator_tag;
+        using value_type = bool;
+        using difference_type = std::ptrdiff_t;
+        using pointer = void; // Not applicable for bit iterators
+        using reference = BitReference<Allocator>;
+
     private:
         BitType* m_ptr;
         unsigned int m_offset;
@@ -88,45 +94,37 @@ namespace bowen
         BitIterator(BitType* ptr = nullptr, unsigned int offset = 0)
             : m_ptr(ptr), m_offset(offset) {}
 
-        BitReference<Allocator> operator*() const
-        {
-            return BitReference(m_ptr, 1UL << m_offset);
+        reference operator*() const {
+            return BitReference<Allocator>(m_ptr, 1UL << m_offset);
         }
 
-        BitIterator& operator++()
-        {
-            if (++m_offset == WORD_BITS)
-            {
+        BitIterator& operator++() {
+            if (++m_offset == WORD_BITS) {
                 m_offset = 0;
                 ++m_ptr;
             }
             return *this;
         }
 
-        BitIterator operator++(int)
-        {
+        BitIterator operator++(int) {
             BitIterator tmp = *this;
             ++(*this);
             return tmp;
         }
 
-        BitIterator& operator--()
-        {
-            if (m_offset-- == 0)
-            {
+        BitIterator& operator--() {
+            if (m_offset-- == 0) {
                 m_offset = WORD_BITS - 1;
                 --m_ptr;
             }
             return *this;
         }
 
-        bool operator==(const BitIterator& other) const
-        {
+        bool operator==(const BitIterator& other) const {
             return m_ptr == other.m_ptr && m_offset == other.m_offset;
         }
 
-        bool operator!=(const BitIterator& other) const
-        {
+        bool operator!=(const BitIterator& other) const {
             return !(*this == other);
         }
     };
@@ -229,12 +227,12 @@ namespace bowen
             else
                 *ptr &= ~mask;
         }
-        inline void set_bit_true_unsafe(const size_t& pos){
+        inline void set_bit_true_unsafe(const size_t& pos) const {
             BitType mask = 1UL << (pos % WORD_BITS);
             BitType * ptr = &m_data[pos / WORD_BITS];
             *ptr |= mask;
         }
-        inline void set_bit_true_6_v2(size_t pos,const size_t stride,const size_t size) {
+        inline void qset_bit_true_6_v2(size_t pos,const size_t stride,const size_t size) const {
                 __m256i vStride = _mm256_set1_epi64x(stride);
                 __m256i vPos = _mm256_set_epi64x(pos + 3 * stride, pos + 2 * stride, pos + stride, pos);
 
@@ -251,7 +249,7 @@ namespace bowen
                     __m256i vIdx = _mm256_div_epi64(vPos, _mm256_set1_epi64x(WORD_BITS));
 
                     // Load, modify, and store back values
-                    
+
                         BitType *ptr0 = &m_data[_mm256_extract_epi64(vIdx, 0)];
                         *ptr0 |= _mm256_extract_epi64(vMask, 0);
                         BitType *ptr1 = &m_data[_mm256_extract_epi64(vIdx, 1)];
@@ -270,7 +268,7 @@ namespace bowen
 
                 // Load, modify, and store back values
                 int j = i;
-               
+
                 if (j < size) {
                     BitType *ptr = &m_data[_mm256_extract_epi64(vIdx2, 0)];
                     *ptr |= _mm256_extract_epi64(vMask2, 0);
@@ -286,10 +284,10 @@ namespace bowen
                 if (j < size) {
                     BitType *ptr = &m_data[_mm256_extract_epi64(vIdx2, 2)];
                     *ptr |= _mm256_extract_epi64(vMask2, 2);
-                } 
-                    
-             
-            
+                }
+
+
+
         }
         inline void set_bit_true_6(size_t pos, const size_t stride) {
             //_mm_prefetch((char *) &m_data[pos + 6 * stride / WORD_BITS], _MM_HINT_T0);

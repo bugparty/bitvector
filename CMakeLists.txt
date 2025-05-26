@@ -11,6 +11,20 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /DEBUG")
 endif()
 
+# Enable AVX-512 support
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_compile_options(-mavx512f)
+elseif(MSVC)
+    message(WARNING "AVX-512 support is not available for MSVC in this configuration.")
+endif()
+
+# Enable BMI1 support
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_compile_options(-mbmi)
+elseif(MSVC)
+    message(WARNING "BMI1 support is not available for MSVC in this configuration.")
+endif()
+
 # Enable testing
 enable_testing()
 
@@ -21,6 +35,14 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/google/googletest.git
     GIT_TAG release-1.11.0  # or use 'master' for latest version
 )
+FetchContent_Declare(
+        simde
+        GIT_REPOSITORY https://github.com/simd-everywhere/simde.git
+        GIT_TAG        master
+)
+FetchContent_MakeAvailable(simde)
+include_directories(${simde_SOURCE_DIR})
+add_compile_definitions(SIMDE_ENABLE_NATIVE_ALIASES)
 
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -42,3 +64,4 @@ add_executable(bitvector main.cpp)
 # Enable test discovery
 include(GoogleTest)
 #gtest_discover_tests(PrimeIteratorTests)
+
