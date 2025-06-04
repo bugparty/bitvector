@@ -345,7 +345,7 @@ namespace bowen
                 
                 BitType *new_data = m_allocator.allocate(new_word_count);
                 std::copy(m_data, m_data + m_capacity, new_data);
-                deallocate_memory(m_data);
+                deallocate_memory();
                 m_data = new_data;
                 m_capacity = new_word_count;
             }
