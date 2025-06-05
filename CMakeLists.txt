@@ -51,6 +51,10 @@ FetchContent_MakeAvailable(gtest)
 
 add_executable(bitvector main.cpp)
 
+# Unit tests
+add_executable(bitvector_tests bitvector_test.cpp)
+target_link_libraries(bitvector_tests GTest::gtest_main)
+
 
 # Link your project with Google Test (only for test purposes)
 #add_executable(PrimeIteratorTests test_prime_iterator.cpp)
@@ -63,5 +67,5 @@ add_executable(bitvector main.cpp)
 
 # Enable test discovery
 include(GoogleTest)
-#gtest_discover_tests(PrimeIteratorTests)
+gtest_discover_tests(bitvector_tests)
 
