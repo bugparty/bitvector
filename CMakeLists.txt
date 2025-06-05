@@ -11,11 +11,16 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /DEBUG")
 endif()
 
-# Enable AVX-512 support
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_compile_options(-mavx512f)
-elseif(MSVC)
-    message(WARNING "AVX-512 support is not available for MSVC in this configuration.")
+# Optionally enable AVX-512 instructions.  Most CI runners do not support
+# AVX-512, so leave it disabled by default to avoid illegal instruction
+# failures at runtime.
+option(ENABLE_AVX512 "Enable AVX-512 instructions" OFF)
+if(ENABLE_AVX512)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        add_compile_options(-mavx512f)
+    elseif(MSVC)
+        message(WARNING "AVX-512 support is not available for MSVC in this configuration.")
+    endif()
 endif()
 
 # Enable BMI1 support
