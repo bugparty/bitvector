@@ -9,6 +9,7 @@
 #include <limits>
 #include <memory>
 #include <nmmintrin.h>
+#include <immintrin.h>
 #include <sstream>
 #include <stdexcept>
 #include <simde/x86/avx2.h>
