@@ -28,3 +28,68 @@ TEST(BitvectorTest, IncrementUntilZero) {
     bv.incrementUntilZero(pos);
     EXPECT_EQ(pos, 8u);
 }
+
+TEST(BitvectorTest, ConstructWithValue) {
+    bowen::bitvector<> bv(10, true);
+    ASSERT_EQ(bv.size(), 10u);
+    for (size_t i = 0; i < bv.size(); ++i) {
+        EXPECT_TRUE(bv[i]);
+    }
+}
+
+TEST(BitvectorTest, OutOfRangeThrows) {
+    bowen::bitvector<> bv(5);
+    EXPECT_THROW(bv[5], std::out_of_range);
+    EXPECT_THROW(bv.set_bit(5, true), std::out_of_range);
+}
+
+TEST(BitvectorTest, CopyAndAssignment) {
+    bowen::bitvector<> bv1;
+    bv1.push_back(false);
+    bv1.push_back(true);
+
+    bowen::bitvector<> bv2(bv1);
+    ASSERT_EQ(bv2.size(), bv1.size());
+    EXPECT_FALSE(bv2[0]);
+    EXPECT_TRUE(bv2[1]);
+
+    bv1.set_bit(0, true);
+    EXPECT_TRUE(bv1[0]);
+    EXPECT_FALSE(bv2[0]);
+
+    bowen::bitvector<> bv3;
+    bv3 = bv1;
+    ASSERT_EQ(bv3.size(), bv1.size());
+    EXPECT_TRUE(bv3[0]);
+    EXPECT_TRUE(bv3[1]);
+}
+
+TEST(BitvectorTest, AssignResizesAndSets) {
+    bowen::bitvector<> bv;
+    bv.assign(12, true);
+    ASSERT_EQ(bv.size(), 12u);
+    for (size_t i = 0; i < bv.size(); ++i)
+        EXPECT_TRUE(bv[i]);
+
+    bv.assign(4, false);
+    ASSERT_EQ(bv.size(), 4u);
+    for (size_t i = 0; i < bv.size(); ++i)
+        EXPECT_FALSE(bv[i]);
+}
+
+TEST(BitvectorTest, IteratorTraversal) {
+    bowen::bitvector<> bv;
+    bv.push_back(true);
+    bv.push_back(false);
+    bv.push_back(true);
+
+    std::vector<bool> values;
+    auto it = bv.begin();
+    for (size_t i = 0; i < bv.size(); ++i, ++it) {
+        values.push_back(*it);
+    }
+    ASSERT_EQ(values.size(), 3u);
+    EXPECT_TRUE(values[0]);
+    EXPECT_FALSE(values[1]);
+    EXPECT_TRUE(values[2]);
+}
