@@ -43,6 +43,17 @@ namespace bowen
 
     typedef uint32_t BitType;
     const int WORD_BITS = static_cast<int>(sizeof(BitType) * 8);
+    constexpr int compute_shift(int bits) {
+        int shift = 0;
+        while (bits > 1) {
+            bits >>= 1;
+            ++shift;
+        }
+        return shift;
+    }
+    static constexpr int WORD_SHIFT = compute_shift(WORD_BITS);
+    static_assert((1u << WORD_SHIFT) == WORD_BITS,
+                  "WORD_BITS must be a power of two for fast indexing");
     template<typename Allocator = MMAllocator<BitType>>
     class BitReference
     {
@@ -202,7 +213,9 @@ namespace bowen
                 throw std::out_of_range(ss.str());
             }
 
-            return BitReference<Allocator>(&m_data[pos / WORD_BITS], 1UL << (pos % WORD_BITS));
+            size_t word_index = pos >> WORD_SHIFT;
+            BitType mask = static_cast<BitType>(1) << (pos & (WORD_BITS - 1));
+            return BitReference<Allocator>(&m_data[word_index], mask);
         }
 
         bool operator[](size_t pos) const
@@ -212,7 +225,9 @@ namespace bowen
                 ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
                 throw std::out_of_range(ss.str());
             }
-            return (m_data[pos / WORD_BITS] & (1UL << (pos % WORD_BITS))) != 0;
+            size_t word_index = pos >> WORD_SHIFT;
+            BitType mask = static_cast<BitType>(1) << (pos & (WORD_BITS - 1));
+            return (m_data[word_index] & mask) != 0;
         }
         inline void set_bit(size_t pos, bool value){
             if (pos >= m_size){
