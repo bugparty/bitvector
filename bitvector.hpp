@@ -356,16 +356,16 @@ namespace bowen
         {
             if (m_size == m_capacity * WORD_BITS)
             {
-                reserve(m_capacity == 0 ? 1 : m_capacity * 2);
+                reserve(m_capacity ? m_capacity * WORD_BITS * 2 : WORD_BITS);
             }
             (*this)[m_size++] = value;
         }
 
         void reserve(size_t new_capacity)
         {
-            if (new_capacity > m_capacity)
+            if (new_capacity > m_capacity * WORD_BITS)
             {
-                size_t new_word_count = num_words(new_capacity * WORD_BITS);
+                size_t new_word_count = num_words(new_capacity);
                 
                 BitType *new_data = m_allocator.allocate(new_word_count);
                 std::copy(m_data, m_data + m_capacity, new_data);
