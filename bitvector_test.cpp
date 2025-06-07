@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 
 TEST(BitvectorTest, PushBackBasic) {
-    bowen::bitvector<> bv;
+    bowen::BitVector<> bv;
     EXPECT_TRUE(bv.empty());
 
     bv.push_back(false);
@@ -17,7 +17,7 @@ TEST(BitvectorTest, PushBackBasic) {
 
 TEST(BitvectorTest, IncrementUntilZero) {
     const size_t N = 20;
-    bowen::bitvector<> bv(N);
+    bowen::BitVector<> bv(N);
 
     // Set bits 5 through 7 to 1
     for (size_t i = 5; i <= 7; ++i) {
@@ -30,7 +30,7 @@ TEST(BitvectorTest, IncrementUntilZero) {
 }
 
 TEST(BitvectorTest, ConstructWithValue) {
-    bowen::bitvector<> bv(10, true);
+    bowen::BitVector<> bv(10, true);
     ASSERT_EQ(bv.size(), 10u);
     for (size_t i = 0; i < bv.size(); ++i) {
         EXPECT_TRUE(bv[i]);
@@ -39,18 +39,18 @@ TEST(BitvectorTest, ConstructWithValue) {
 
 #ifndef BITVECTOR_NO_BOUND_CHECK
 TEST(BitvectorTest, OutOfRangeThrows) {
-    bowen::bitvector<> bv(5);
+    bowen::BitVector<> bv(5);
     EXPECT_THROW(bv[5], std::out_of_range);
     EXPECT_THROW(bv.set_bit(5, true), std::out_of_range);
 }
 #endif
 
 TEST(BitvectorTest, CopyAndAssignment) {
-    bowen::bitvector<> bv1;
+    bowen::BitVector<> bv1;
     bv1.push_back(false);
     bv1.push_back(true);
 
-    bowen::bitvector<> bv2(bv1);
+    bowen::BitVector<> bv2(bv1);
     ASSERT_EQ(bv2.size(), bv1.size());
     EXPECT_FALSE(bv2[0]);
     EXPECT_TRUE(bv2[1]);
@@ -59,7 +59,7 @@ TEST(BitvectorTest, CopyAndAssignment) {
     EXPECT_TRUE(bv1[0]);
     EXPECT_FALSE(bv2[0]);
 
-    bowen::bitvector<> bv3;
+    bowen::BitVector<> bv3;
     bv3 = bv1;
     ASSERT_EQ(bv3.size(), bv1.size());
     EXPECT_TRUE(bv3[0]);
@@ -67,7 +67,7 @@ TEST(BitvectorTest, CopyAndAssignment) {
 }
 
 TEST(BitvectorTest, AssignResizesAndSets) {
-    bowen::bitvector<> bv;
+    bowen::BitVector<> bv;
     bv.assign(12, true);
     ASSERT_EQ(bv.size(), 12u);
     for (size_t i = 0; i < bv.size(); ++i)
@@ -80,7 +80,7 @@ TEST(BitvectorTest, AssignResizesAndSets) {
 }
 
 TEST(BitvectorTest, IteratorTraversal) {
-    bowen::bitvector<> bv;
+    bowen::BitVector<> bv;
     bv.push_back(true);
     bv.push_back(false);
     bv.push_back(true);

@@ -42,7 +42,7 @@ The following table shows benchmark times from the latest CI run. Each test was 
 `incrementUntilZero` scans the bit vector starting at the given position until it reaches the first zero bit. The position is updated in place:
 
 ```cpp
-bitvector<> bv(1024, true);
+BitVector<> bv(1024, true);
 bv.set_bit(1023, false); // ensure there is a zero bit
 size_t pos = 0;
 bv.incrementUntilZero(pos);

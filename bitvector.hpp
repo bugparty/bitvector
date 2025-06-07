@@ -141,7 +141,7 @@ namespace bowen
         }
     };
     template<typename Allocator = std::allocator<BitType>>
-    class bitvector
+    class BitVector
     {
     private:
         BitType* m_data;
@@ -170,24 +170,24 @@ namespace bowen
         typedef size_t size_type;
         typedef BitReference<Allocator> reference;
 
-        bitvector()
+        BitVector()
             : m_data(nullptr), m_size(0), m_capacity(0) {}
 
-        explicit bitvector(size_t n, bool value = false)
+        explicit BitVector(size_t n, bool value = false)
             : m_size(n), m_capacity(num_words(n))
         {
             allocate_memory(m_capacity);
             std::memset(m_data, value ? ~0 : 0, m_capacity * sizeof(BitType));
         }
 
-        bitvector(const bitvector& other)
+        BitVector(const BitVector& other)
             : m_size(other.m_size), m_capacity(other.m_capacity)
         {
             allocate_memory(m_capacity);
             std::copy(other.m_data, other.m_data + m_capacity, m_data);
         }
 
-        bitvector& operator=(const bitvector& other)
+        BitVector& operator=(const BitVector& other)
         {
             if (this != &other)
             {
@@ -201,7 +201,7 @@ namespace bowen
             return *this;
         }
 
-        ~bitvector()
+        ~BitVector()
         {
             deallocate_memory();
         }
@@ -211,7 +211,7 @@ namespace bowen
 #ifndef BITVECTOR_NO_BOUND_CHECK
             if (pos >= m_size){
                 std::stringstream  ss;
-                ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
+                ss << "BitVector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
                 throw std::out_of_range(ss.str());
             }
 #endif
@@ -226,7 +226,7 @@ namespace bowen
 #ifndef BITVECTOR_NO_BOUND_CHECK
             if (pos >= m_size){
                 std::stringstream  ss;
-                ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
+                ss << "BitVector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
                 throw std::out_of_range(ss.str());
             }
 #endif
@@ -238,7 +238,7 @@ namespace bowen
 #ifndef BITVECTOR_NO_BOUND_CHECK
             if (pos >= m_size){
                 std::stringstream  ss;
-                ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
+                ss << "BitVector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
                 throw std::out_of_range(ss.str());
             }
 #endif
@@ -325,7 +325,7 @@ namespace bowen
 #ifndef BITVECTOR_NO_BOUND_CHECK
             if (pos >= m_size){
                 std::stringstream  ss;
-                ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
+                ss << "BitVector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
                 throw std::out_of_range(ss.str());
                     return;
             }

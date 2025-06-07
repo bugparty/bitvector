@@ -6,12 +6,12 @@
 #define BITVECTOR_BENCHMARK_MIN_TIME 0.2
 #endif
 
-using bowen::bitvector;
+using bowen::BitVector;
 
 static void BM_Bowen_Set(benchmark::State& state) {
   size_t n = state.range(0);
   for (auto _ : state) {
-    bitvector<> bv(n);
+    BitVector<> bv(n);
     for (size_t i=0;i<n;++i) {
       bv[i] = static_cast<bool>(i & 1);
     }
@@ -33,7 +33,7 @@ static void BM_Std_Set(benchmark::State& state) {
 static void BM_Bowen_PushBack(benchmark::State& state) {
   size_t n = state.range(0);
   for (auto _ : state) {
-    bitvector<> bv;
+    BitVector<> bv;
     bv.reserve(n);
     for (size_t i=0;i<n;++i) {
       bv.push_back(static_cast<bool>(i & 1));
@@ -56,7 +56,7 @@ static void BM_Std_PushBack(benchmark::State& state) {
 
 static void BM_Bowen_Access(benchmark::State& state) {
   size_t n = state.range(0);
-  bitvector<> bv(n);
+  BitVector<> bv(n);
   for (size_t i=0;i<n;++i) bv[i] = static_cast<bool>(i & 1);
   for (auto _ : state) {
     size_t sum=0;
@@ -79,7 +79,7 @@ static void BM_Std_Access(benchmark::State& state) {
 static void BM_Bowen_SetBit(benchmark::State& state) {
   size_t n = state.range(0);
   for (auto _ : state) {
-    bitvector<> bv(n);
+    BitVector<> bv(n);
     for (size_t i=0;i<n;++i) {
       bv.set_bit(i, static_cast<bool>(i & 1));
     }
@@ -101,7 +101,7 @@ static void BM_Std_SetBit(benchmark::State& state) {
 static void BM_Bowen_SetBitTrueUnsafe(benchmark::State& state) {
   size_t n = state.range(0);
   for (auto _ : state) {
-    bitvector<> bv(n);
+    BitVector<> bv(n);
     for (size_t i=0;i<n;++i) {
       bv.set_bit_true_unsafe(i);
     }
@@ -124,7 +124,7 @@ static void BM_Std_SetBitTrueUnsafe(benchmark::State& state) {
 static void BM_Bowen_SetBitTrue6(benchmark::State& state) {
   size_t n = state.range(0);
   for (auto _ : state) {
-    bitvector<> bv(n);
+    BitVector<> bv(n);
     for (size_t pos=0; pos+5 < n; pos+=6) {
       bv.set_bit_true_6(pos, 1);
     }
@@ -148,7 +148,7 @@ static void BM_Std_SetBitTrue6(benchmark::State& state) {
 static void BM_Bowen_QSetBitTrue6V2(benchmark::State& state) {
   size_t n = state.range(0);
   for (auto _ : state) {
-    bitvector<> bv(n);
+    BitVector<> bv(n);
     bv.qset_bit_true_6_v2(0, 1, n);
     benchmark::ClobberMemory();
   }
@@ -167,7 +167,7 @@ static void BM_Std_QSetBitTrue6(benchmark::State& state) {
 
 static void BM_Bowen_IncrementUntilZero(benchmark::State& state) {
   size_t n = state.range(0);
-  bitvector<> bv(n, true);
+  BitVector<> bv(n, true);
   bv.set_bit(n-1, false);
   for (auto _ : state) {
     size_t pos = 0;
