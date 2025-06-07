@@ -208,7 +208,7 @@ namespace bowen
 
         reference operator[](size_t pos)
         {
-#ifndef BITVECTOR_DISABLE_BOUNDS_CHECK
+#ifndef BITVECTOR_NO_BOUND_CHECK
             if (pos >= m_size){
                 std::stringstream  ss;
                 ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
@@ -223,7 +223,7 @@ namespace bowen
 
         bool operator[](size_t pos) const
         {
-#ifndef BITVECTOR_DISABLE_BOUNDS_CHECK
+#ifndef BITVECTOR_NO_BOUND_CHECK
             if (pos >= m_size){
                 std::stringstream  ss;
                 ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
@@ -235,7 +235,7 @@ namespace bowen
             return (m_data[word_index] & mask) != 0;
         }
         inline void set_bit(size_t pos, bool value){
-#ifndef BITVECTOR_DISABLE_BOUNDS_CHECK
+#ifndef BITVECTOR_NO_BOUND_CHECK
             if (pos >= m_size){
                 std::stringstream  ss;
                 ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
@@ -322,7 +322,7 @@ namespace bowen
         }
         void incrementUntilZero(size_t& pos){
             // Ensure the position is within bounds
-#ifndef BITVECTOR_DISABLE_BOUNDS_CHECK
+#ifndef BITVECTOR_NO_BOUND_CHECK
             if (pos >= m_size){
                 std::stringstream  ss;
                 ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;

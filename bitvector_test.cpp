@@ -37,11 +37,13 @@ TEST(BitvectorTest, ConstructWithValue) {
     }
 }
 
+#ifndef BITVECTOR_NO_BOUND_CHECK
 TEST(BitvectorTest, OutOfRangeThrows) {
     bowen::bitvector<> bv(5);
     EXPECT_THROW(bv[5], std::out_of_range);
     EXPECT_THROW(bv.set_bit(5, true), std::out_of_range);
 }
+#endif
 
 TEST(BitvectorTest, CopyAndAssignment) {
     bowen::bitvector<> bv1;

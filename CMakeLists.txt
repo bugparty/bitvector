@@ -34,6 +34,12 @@ elseif(MSVC)
     message(WARNING "BMI1 support is not available for MSVC in this configuration.")
 endif()
 
+# Optionally disable bounds checking in the bitvector implementation
+option(BITVECTOR_ENABLE_BOUND_CHECK "Enable bounds checking in bitvector" OFF)
+if(NOT BITVECTOR_ENABLE_BOUND_CHECK)
+    add_compile_definitions(BITVECTOR_NO_BOUND_CHECK)
+endif()
+
 # Enable testing
 enable_testing()
 
