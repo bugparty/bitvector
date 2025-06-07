@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 project(bitvector)
 
 set(CMAKE_CXX_STANDARD 17)
-option(BITVECTOR_NO_BOUND_CHECK "Disable bounds checking in bitvector" OFF)
+option(BITVECTOR_NO_BOUND_CHECK "Disable bounds checking in bitvector" ON)
 if(BITVECTOR_NO_BOUND_CHECK)
   add_compile_definitions(BITVECTOR_NO_BOUND_CHECK)
 endif()
