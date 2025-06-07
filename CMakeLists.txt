@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.21)
 project(bitvector)
 
 set(CMAKE_CXX_STANDARD 17)
+option(BV_BOUNDS_CHECK "Enable bounds checking in bitvector" OFF)
+if(NOT BV_BOUNDS_CHECK)
+  add_compile_definitions(BITVECTOR_DISABLE_BOUNDS_CHECK)
+endif()
 if(MSVC)
   # Set compiler flags for all configurations
   #add_compile_options("/O2" "/Zi" "/DEBUG")
