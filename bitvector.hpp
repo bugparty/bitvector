@@ -16,7 +16,7 @@
 #include <simde/x86/avx512.h>
 namespace bowen
 {
-    template<typename T,unsigned int ALIGN_SIZE=32>
+    template<typename T, unsigned int ALIGN_SIZE = 32>
     class MMAllocator {
     public:
         typedef T value_type;
@@ -42,7 +42,7 @@ namespace bowen
         }
     };
 
-    typedef uint32_t BitType;
+    typedef unsigned long BitType;
     const int WORD_BITS = static_cast<int>(sizeof(BitType) * 8);
     constexpr int compute_shift(int bits) {
         int shift = 0;
@@ -55,7 +55,7 @@ namespace bowen
     static constexpr int WORD_SHIFT = compute_shift(WORD_BITS);
     static_assert((1u << WORD_SHIFT) == WORD_BITS,
                   "WORD_BITS must be a power of two for fast indexing");
-    template<typename Allocator = MMAllocator<BitType>>
+    template<typename Allocator = std::allocator<BitType>>
     class BitReference
     {
     private:
@@ -90,7 +90,7 @@ namespace bowen
             *m_ptr ^= m_mask;
         }
     };
-    template<typename Allocator = MMAllocator<BitType>>
+    template<typename Allocator = std::allocator<BitType>>
     class BitIterator {
         using iterator_category = std::random_access_iterator_tag;
         using value_type = bool;
@@ -140,7 +140,7 @@ namespace bowen
             return !(*this == other);
         }
     };
-    template<typename Allocator = MMAllocator<BitType>>
+    template<typename Allocator = std::allocator<BitType>>
     class bitvector
     {
     private:
@@ -336,7 +336,7 @@ namespace bowen
             }
             while(pos < m_size-WORD_BITS&& (*this)[pos] != 0){
                 BitType num = m_data[pos / WORD_BITS];
-                int oneCounts = _tzcnt_u32(~num);
+                int oneCounts = _tzcnt_u64(~num);
                 if(oneCounts == WORD_BITS){
                     pos+= oneCounts;
                 }else{
