@@ -29,7 +29,7 @@ namespace bowen
             if (n > std::numeric_limits<std::size_t>::max() / sizeof(T)) {
                 throw std::bad_alloc();
             }
-           
+
             void *ptr = _mm_malloc(n * sizeof(T), ALIGN_SIZE);
             if (!ptr) {
                 throw std::bad_alloc();
@@ -374,7 +374,7 @@ namespace bowen
             if (new_capacity > m_capacity * WORD_BITS)
             {
                 size_t new_word_count = num_words(new_capacity);
-                
+
                 BitType *new_data = m_allocator.allocate(new_word_count);
                 std::copy(m_data, m_data + m_capacity, new_data);
                 deallocate_memory();
