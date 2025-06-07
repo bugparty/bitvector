@@ -72,6 +72,50 @@ static void BM_Std_Access(benchmark::State& state) {
   }
 }
 
+static void BM_Bowen_SetBit(benchmark::State& state) {
+  size_t n = state.range(0);
+  for (auto _ : state) {
+    bitvector<> bv(n);
+    for (size_t i=0;i<n;++i) {
+      bv.set_bit(i, static_cast<bool>(i & 1));
+    }
+    benchmark::ClobberMemory();
+  }
+}
+
+static void BM_Std_SetBit(benchmark::State& state) {
+  size_t n = state.range(0);
+  for (auto _ : state) {
+    std::vector<bool> bv(n);
+    for (size_t i=0;i<n;++i) {
+      bv[i] = static_cast<bool>(i & 1);
+    }
+    benchmark::ClobberMemory();
+  }
+}
+
+static void BM_Bowen_SetBitTrueUnsafe(benchmark::State& state) {
+  size_t n = state.range(0);
+  for (auto _ : state) {
+    bitvector<> bv(n);
+    for (size_t i=0;i<n;++i) {
+      bv.set_bit_true_unsafe(i);
+    }
+    benchmark::ClobberMemory();
+  }
+}
+
+static void BM_Std_SetBitTrueUnsafe(benchmark::State& state) {
+  size_t n = state.range(0);
+  for (auto _ : state) {
+    std::vector<bool> bv(n);
+    for (size_t i=0;i<n;++i) {
+      bv[i] = true;
+    }
+    benchmark::ClobberMemory();
+  }
+}
+
 
 static void BM_Bowen_SetBitTrue6(benchmark::State& state) {
   size_t n = state.range(0);
@@ -149,6 +193,10 @@ BENCHMARK(BM_Bowen_PushBack)->Arg(1<<20)->MinTime(5.0);
 BENCHMARK(BM_Std_PushBack)->Arg(1<<20)->MinTime(5.0);
 BENCHMARK(BM_Bowen_Access)->Arg(1<<20)->MinTime(5.0);
 BENCHMARK(BM_Std_Access)->Arg(1<<20)->MinTime(5.0);
+BENCHMARK(BM_Bowen_SetBit)->Arg(1<<20)->MinTime(5.0);
+BENCHMARK(BM_Std_SetBit)->Arg(1<<20)->MinTime(5.0);
+BENCHMARK(BM_Bowen_SetBitTrueUnsafe)->Arg(1<<20)->MinTime(5.0);
+BENCHMARK(BM_Std_SetBitTrueUnsafe)->Arg(1<<20)->MinTime(5.0);
 BENCHMARK(BM_Bowen_SetBitTrue6)->Arg(1<<20)->MinTime(5.0);
 BENCHMARK(BM_Std_SetBitTrue6)->Arg(1<<20)->MinTime(5.0);
 BENCHMARK(BM_Bowen_QSetBitTrue6V2)->Arg(1<<20)->MinTime(5.0);
