@@ -18,3 +18,5 @@ jobs:
         run: cmake --build build --config Release
       - name: Run tests
         run: ctest --test-dir build --output-on-failure
+      - name: Run benchmarks
+        run: ./build/bitvector_benchmark --benchmark_min_time=0.01s
