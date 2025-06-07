@@ -31,7 +31,7 @@ elseif(MSVC)
 endif()
 
 # Optionally disable bounds checking in the bitvector implementation
-option(BITVECTOR_ENABLE_BOUND_CHECK "Enable bounds checking in bitvector" ON)
+option(BITVECTOR_ENABLE_BOUND_CHECK "Enable bounds checking in bitvector" OFF)
 if(NOT BITVECTOR_ENABLE_BOUND_CHECK)
     add_compile_definitions(BITVECTOR_NO_BOUND_CHECK)
 endif()
