@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.21)
 project(bitvector)
 
 set(CMAKE_CXX_STANDARD 17)
-option(BV_BOUNDS_CHECK "Enable bounds checking in bitvector" OFF)
-if(NOT BV_BOUNDS_CHECK)
-  add_compile_definitions(BITVECTOR_DISABLE_BOUNDS_CHECK)
+option(BITVECTOR_NO_BOUND_CHECK "Disable bounds checking in bitvector" OFF)
+if(BITVECTOR_NO_BOUND_CHECK)
+  add_compile_definitions(BITVECTOR_NO_BOUND_CHECK)
 endif()
 if(MSVC)
   # Set compiler flags for all configurations
@@ -35,10 +35,6 @@ elseif(MSVC)
 endif()
 
 # Optionally disable bounds checking in the bitvector implementation
-option(BITVECTOR_ENABLE_BOUND_CHECK "Enable bounds checking in bitvector" OFF)
-if(NOT BITVECTOR_ENABLE_BOUND_CHECK)
-    add_compile_definitions(BITVECTOR_NO_BOUND_CHECK)
-endif()
 
 # Enable testing
 enable_testing()
