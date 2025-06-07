@@ -3,7 +3,10 @@
 #include <chrono>
 #include <iostream>
 #include <vector>
-constexpr size_t SIZE = 1000000000;  // 1 billion elements
+
+// Benchmark size: 1 billion elements
+constexpr size_t SIZE = 1000000000;
+
 // Benchmarks the performance of std::vector<bool> for setting, accessing, and traversing elements.
 void benchmarkStdVectorBool(){
 
