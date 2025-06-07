@@ -72,6 +72,7 @@ static void BM_Std_Access(benchmark::State& state) {
   }
 }
 
+
 static void BM_Bowen_SetBitTrue6(benchmark::State& state) {
   size_t n = state.range(0);
   for (auto _ : state) {
