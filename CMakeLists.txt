@@ -49,6 +49,15 @@ FetchContent_MakeAvailable(simde)
 include_directories(${simde_SOURCE_DIR})
 add_compile_definitions(SIMDE_ENABLE_NATIVE_ALIASES)
 
+# Google Benchmark
+FetchContent_Declare(
+    benchmark
+    GIT_REPOSITORY https://github.com/google/benchmark.git
+    GIT_TAG v1.8.3
+)
+set(BENCHMARK_ENABLE_TESTING OFF)
+FetchContent_MakeAvailable(benchmark)
+
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 # Download and build Google Test
@@ -59,6 +68,10 @@ add_executable(bitvector main.cpp)
 # Unit tests
 add_executable(bitvector_tests bitvector_test.cpp)
 target_link_libraries(bitvector_tests GTest::gtest_main)
+
+# Benchmark target
+add_executable(bitvector_benchmark bitvector_benchmark.cpp)
+target_link_libraries(bitvector_benchmark benchmark::benchmark)
 
 
 # Link your project with Google Test (only for test purposes)

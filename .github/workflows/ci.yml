@@ -18,3 +18,12 @@ jobs:
         run: cmake --build build --config Release
       - name: Run tests
         run: ctest --test-dir build --output-on-failure
+      - name: Run benchmarks
+        run: ./build/bitvector_benchmark --benchmark_min_time=0.01s
+      - name: Dump benchmark assembly
+        run: |
+          chmod +x scripts/dump_benchmark_asm.sh
+          scripts/dump_benchmark_asm.sh \
+            build/CMakeFiles/bitvector_benchmark.dir/bitvector_benchmark.cpp.o \
+            BM_Bowen_Set BM_Std_Set BM_Bowen_PushBack BM_Std_PushBack \
+            BM_Bowen_Access BM_Std_Access
