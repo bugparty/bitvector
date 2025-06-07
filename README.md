@@ -4,7 +4,10 @@ This repository provides a small bit vector implementation along with tests and 
 
 ## Running the benchmarks without bounds checking
 
-Bounds checking is enabled by default. To benchmark without checks, configure and build with (this defines `BITVECTOR_NO_BOUND_CHECK`):
+Bounds checking is enabled by default. To benchmark without checks, configure
+and build with (this defines `BITVECTOR_NO_BOUND_CHECK`). The build system now
+detects whether the compiler and host CPU support AVX2 or other native
+instructions and enables them when possible:
 
 ```bash
 cmake -S . -B build -DBITVECTOR_NO_BOUND_CHECK=ON -DCMAKE_BUILD_TYPE=Release

@@ -42,6 +42,26 @@ elseif(MSVC)
     message(WARNING "BMI1 support is not available for MSVC in this configuration.")
 endif()
 
+# Detect AVX2 or native CPU optimizations and enable them if available
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    include(CheckCXXCompilerFlag)
+    check_cxx_compiler_flag("-march=native" COMPILER_SUPPORTS_MARCH_NATIVE)
+    if(COMPILER_SUPPORTS_MARCH_NATIVE)
+        add_compile_options(-march=native)
+    else()
+        check_cxx_compiler_flag("-mavx2" COMPILER_SUPPORTS_AVX2)
+        if(COMPILER_SUPPORTS_AVX2)
+            add_compile_options(-mavx2)
+        endif()
+    endif()
+elseif(MSVC)
+    include(CheckCXXCompilerFlag)
+    check_cxx_compiler_flag("/arch:AVX2" COMPILER_SUPPORTS_AVX2)
+    if(COMPILER_SUPPORTS_AVX2)
+        add_compile_options(/arch:AVX2)
+    endif()
+endif()
+
 # Optionally disable bounds checking in the bitvector implementation
 
 # Enable testing
