@@ -2,6 +2,10 @@
 #include <benchmark/benchmark.h>
 #include <vector>
 
+#ifndef BITVECTOR_BENCHMARK_MIN_TIME
+#define BITVECTOR_BENCHMARK_MIN_TIME 0.2
+#endif
+
 using bowen::bitvector;
 
 static void BM_Bowen_Set(benchmark::State& state) {
@@ -143,17 +147,17 @@ static void BM_Std_IncrementUntilZero(benchmark::State& state) {
   }
 }
 
-BENCHMARK(BM_Bowen_Set)->Arg(1<<20)->MinTime(5.0);
-BENCHMARK(BM_Std_Set)->Arg(1<<20)->MinTime(5.0);
-BENCHMARK(BM_Bowen_PushBack)->Arg(1<<20)->MinTime(5.0);
-BENCHMARK(BM_Std_PushBack)->Arg(1<<20)->MinTime(5.0);
-BENCHMARK(BM_Bowen_Access)->Arg(1<<20)->MinTime(5.0);
-BENCHMARK(BM_Std_Access)->Arg(1<<20)->MinTime(5.0);
-BENCHMARK(BM_Bowen_SetBitTrue6)->Arg(1<<20)->MinTime(5.0);
-BENCHMARK(BM_Std_SetBitTrue6)->Arg(1<<20)->MinTime(5.0);
-BENCHMARK(BM_Bowen_QSetBitTrue6V2)->Arg(1<<20)->MinTime(5.0);
-BENCHMARK(BM_Std_QSetBitTrue6)->Arg(1<<20)->MinTime(5.0);
-BENCHMARK(BM_Bowen_IncrementUntilZero)->Arg(1<<20)->MinTime(5.0);
-BENCHMARK(BM_Std_IncrementUntilZero)->Arg(1<<20)->MinTime(5.0);
+BENCHMARK(BM_Bowen_Set)->Arg(1<<20)->MinTime(BITVECTOR_BENCHMARK_MIN_TIME);
+BENCHMARK(BM_Std_Set)->Arg(1<<20)->MinTime(BITVECTOR_BENCHMARK_MIN_TIME);
+BENCHMARK(BM_Bowen_PushBack)->Arg(1<<20)->MinTime(BITVECTOR_BENCHMARK_MIN_TIME);
+BENCHMARK(BM_Std_PushBack)->Arg(1<<20)->MinTime(BITVECTOR_BENCHMARK_MIN_TIME);
+BENCHMARK(BM_Bowen_Access)->Arg(1<<20)->MinTime(BITVECTOR_BENCHMARK_MIN_TIME);
+BENCHMARK(BM_Std_Access)->Arg(1<<20)->MinTime(BITVECTOR_BENCHMARK_MIN_TIME);
+BENCHMARK(BM_Bowen_SetBitTrue6)->Arg(1<<20)->MinTime(BITVECTOR_BENCHMARK_MIN_TIME);
+BENCHMARK(BM_Std_SetBitTrue6)->Arg(1<<20)->MinTime(BITVECTOR_BENCHMARK_MIN_TIME);
+BENCHMARK(BM_Bowen_QSetBitTrue6V2)->Arg(1<<20)->MinTime(BITVECTOR_BENCHMARK_MIN_TIME);
+BENCHMARK(BM_Std_QSetBitTrue6)->Arg(1<<20)->MinTime(BITVECTOR_BENCHMARK_MIN_TIME);
+BENCHMARK(BM_Bowen_IncrementUntilZero)->Arg(1<<20)->MinTime(BITVECTOR_BENCHMARK_MIN_TIME);
+BENCHMARK(BM_Std_IncrementUntilZero)->Arg(1<<20)->MinTime(BITVECTOR_BENCHMARK_MIN_TIME);
 
 BENCHMARK_MAIN();
