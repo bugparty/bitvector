@@ -208,11 +208,13 @@ namespace bowen
 
         reference operator[](size_t pos)
         {
+#ifndef BITVECTOR_DISABLE_BOUNDS_CHECK
             if (pos >= m_size){
                 std::stringstream  ss;
                 ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
                 throw std::out_of_range(ss.str());
             }
+#endif
 
             size_t word_index = pos >> WORD_SHIFT;
             BitType mask = static_cast<BitType>(1) << (pos & (WORD_BITS - 1));
@@ -221,21 +223,25 @@ namespace bowen
 
         bool operator[](size_t pos) const
         {
+#ifndef BITVECTOR_DISABLE_BOUNDS_CHECK
             if (pos >= m_size){
                 std::stringstream  ss;
                 ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
                 throw std::out_of_range(ss.str());
             }
+#endif
             size_t word_index = pos >> WORD_SHIFT;
             BitType mask = static_cast<BitType>(1) << (pos & (WORD_BITS - 1));
             return (m_data[word_index] & mask) != 0;
         }
         inline void set_bit(size_t pos, bool value){
+#ifndef BITVECTOR_DISABLE_BOUNDS_CHECK
             if (pos >= m_size){
                 std::stringstream  ss;
                 ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
                 throw std::out_of_range(ss.str());
             }
+#endif
             BitType mask = 1UL << (pos % WORD_BITS);
             BitType * ptr = &m_data[pos / WORD_BITS];
             if (value)
@@ -316,12 +322,14 @@ namespace bowen
         }
         void incrementUntilZero(size_t& pos){
             // Ensure the position is within bounds
+#ifndef BITVECTOR_DISABLE_BOUNDS_CHECK
             if (pos >= m_size){
                 std::stringstream  ss;
                 ss << "bitvector index out of range" << "pos: "<< pos << " size: " << m_size << std::endl;
                 throw std::out_of_range(ss.str());
                     return;
             }
+#endif
             while (pos < m_size&& pos%WORD_BITS!=0 && (*this)[pos] != 0) // Check if bit at pos is 1
             {
                 ++pos; // Increment pos to the next bit
