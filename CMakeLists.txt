@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.21)
 project(bitvector)
 
 set(CMAKE_CXX_STANDARD 17)
-option(BV_BOUNDS_CHECK "Enable bounds checking in bitvector" ON)
-if(NOT BV_BOUNDS_CHECK)
+option(BITVECTOR_NO_BOUND_CHECK "Disable bounds checking in bitvector" OFF)
+if(BITVECTOR_NO_BOUND_CHECK)
   add_compile_definitions(BITVECTOR_NO_BOUND_CHECK)
 endif()
 if(MSVC)
@@ -34,6 +34,7 @@ elseif(MSVC)
     message(WARNING "BMI1 support is not available for MSVC in this configuration.")
 endif()
 
+# Optionally disable bounds checking in the bitvector implementation
 
 # Enable testing
 enable_testing()
