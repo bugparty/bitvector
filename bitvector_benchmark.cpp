@@ -72,11 +72,11 @@ static void BM_Std_Access(benchmark::State& state) {
   }
 }
 
-BENCHMARK(BM_Bowen_Set)->Arg(1<<20);
-BENCHMARK(BM_Std_Set)->Arg(1<<20);
-BENCHMARK(BM_Bowen_PushBack)->Arg(1<<20);
-BENCHMARK(BM_Std_PushBack)->Arg(1<<20);
-BENCHMARK(BM_Bowen_Access)->Arg(1<<20);
-BENCHMARK(BM_Std_Access)->Arg(1<<20);
+BENCHMARK(BM_Bowen_Set)->Arg(1<<20)->MinTime(5.0);
+BENCHMARK(BM_Std_Set)->Arg(1<<20)->MinTime(5.0);
+BENCHMARK(BM_Bowen_PushBack)->Arg(1<<20)->MinTime(5.0);
+BENCHMARK(BM_Std_PushBack)->Arg(1<<20)->MinTime(5.0);
+BENCHMARK(BM_Bowen_Access)->Arg(1<<20)->MinTime(5.0);
+BENCHMARK(BM_Std_Access)->Arg(1<<20)->MinTime(5.0);
 
 BENCHMARK_MAIN();
