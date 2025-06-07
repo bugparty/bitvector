@@ -358,7 +358,15 @@ namespace bowen
             {
                 reserve(m_capacity ? m_capacity * WORD_BITS * 2 : WORD_BITS);
             }
-            (*this)[m_size++] = value;
+
+            size_t word_index = m_size >> WORD_SHIFT;
+            BitType mask = static_cast<BitType>(1)
+                           << (m_size & (WORD_BITS - 1));
+            if (value)
+                m_data[word_index] |= mask;
+            else
+                m_data[word_index] &= ~mask;
+            ++m_size;
         }
 
         void reserve(size_t new_capacity)
