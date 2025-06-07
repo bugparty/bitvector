@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 # benchmarks is configured with `BITVECTOR_BENCHMARK_MIN_TIME`.
 set(BITVECTOR_TEST_TIMEOUT 10 CACHE STRING "Timeout in seconds for each unit test")
 set(BITVECTOR_BENCHMARK_MIN_TIME 0.2 CACHE STRING "Minimum time in seconds for benchmark runs")
+
 option(BITVECTOR_NO_BOUND_CHECK "Disable bounds checking in bitvector" ON)
 if(BITVECTOR_NO_BOUND_CHECK)
   add_compile_definitions(BITVECTOR_NO_BOUND_CHECK)
