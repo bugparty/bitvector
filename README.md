@@ -1,6 +1,8 @@
 # bitvector
 
-This repository provides a small bit vector implementation along with tests and benchmarks.
+A compact library focused on lightning-fast bit operations. This project delivers
+hardware-friendly algorithms that outpace the STL `bitset`, giving your
+applications measurable speed gains alongside an intuitive API.
 
 ## Running the benchmarks without bounds checking
 
@@ -16,24 +18,16 @@ cmake --build build --config Release
 
 The following table shows benchmark times from the latest CI run. Each test was executed with `1<<20` bits.
 
-| Benchmark | Time (ns) |
-|-----------|-----------|
-| BM_Bowen_Set | 1826751 |
-| BM_Std_Set | 2975545 |
-| BM_Bowen_PushBack | 1998142 |
-| BM_Std_PushBack | 2990558 |
-| BM_Bowen_Access | 984200 |
-| BM_Std_Access | 2257978 |
-| BM_Bowen_SetBit | 2123333 |
-| BM_Std_SetBit | 2740340 |
-| BM_Bowen_SetBitTrueUnsafe | 1992765 |
-| BM_Std_SetBitTrueUnsafe | 2558438 |
-| BM_Bowen_SetBitTrue6 | 1545274 |
-| BM_Std_SetBitTrue6 | 2601283 |
-| BM_Bowen_QSetBitTrue6V2 | 2248553 |
-| BM_Std_QSetBitTrue6 | 3133552 |
-| BM_Bowen_IncrementUntilZero | 34849 |
-| BM_Std_IncrementUntilZero | 1941798 |
+| My Function | Time (ns) | STL Function | Time (ns) | Speedup |
+|-------------|-----------|--------------|-----------|---------|
+| BM_Bowen_Set | 1826751 | BM_Std_Set | 2975545 | 1.63x |
+| BM_Bowen_PushBack | 1998142 | BM_Std_PushBack | 2990558 | 1.50x |
+| BM_Bowen_Access | 984200 | BM_Std_Access | 2257978 | 2.29x |
+| BM_Bowen_SetBit | 2123333 | BM_Std_SetBit | 2740340 | 1.29x |
+| BM_Bowen_SetBitTrueUnsafe | 1992765 | BM_Std_SetBitTrueUnsafe | 2558438 | 1.28x |
+| BM_Bowen_SetBitTrue6 | 1545274 | BM_Std_SetBitTrue6 | 2601283 | 1.68x |
+| BM_Bowen_QSetBitTrue6V2 | 2248553 | BM_Std_QSetBitTrue6 | 3133552 | 1.39x |
+| BM_Bowen_IncrementUntilZero | 34849 | BM_Std_IncrementUntilZero | 1941798 | 55.72x |
 
 `BM_Bowen_IncrementUntilZero` is the fastest benchmark, showing a substantial improvement over the standard approach.
 
