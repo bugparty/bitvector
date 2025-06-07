@@ -2,6 +2,13 @@ cmake_minimum_required(VERSION 3.21)
 project(bitvector)
 
 set(CMAKE_CXX_STANDARD 17)
+
+# Allow configuring how long tests may run and how long benchmarks
+# should execute.  The timeout for GoogleTest-based unit tests is set via
+# `BITVECTOR_TEST_TIMEOUT`.  The minimum runtime for Google Benchmark
+# benchmarks is configured with `BITVECTOR_BENCHMARK_MIN_TIME`.
+set(BITVECTOR_TEST_TIMEOUT 10 CACHE STRING "Timeout in seconds for each unit test")
+set(BITVECTOR_BENCHMARK_MIN_TIME 0.2 CACHE STRING "Minimum time in seconds for benchmark runs")
 option(BITVECTOR_NO_BOUND_CHECK "Disable bounds checking in bitvector" ON)
 if(BITVECTOR_NO_BOUND_CHECK)
   add_compile_definitions(BITVECTOR_NO_BOUND_CHECK)
@@ -78,6 +85,7 @@ target_link_libraries(bitvector_tests GTest::gtest_main)
 # Benchmark target
 add_executable(bitvector_benchmark bitvector_benchmark.cpp)
 target_link_libraries(bitvector_benchmark benchmark::benchmark)
+target_compile_definitions(bitvector_benchmark PRIVATE BITVECTOR_BENCHMARK_MIN_TIME=${BITVECTOR_BENCHMARK_MIN_TIME})
 
 
 # Link your project with Google Test (only for test purposes)
@@ -91,5 +99,5 @@ target_link_libraries(bitvector_benchmark benchmark::benchmark)
 
 # Enable test discovery
 include(GoogleTest)
-gtest_discover_tests(bitvector_tests)
+gtest_discover_tests(bitvector_tests PROPERTIES TIMEOUT ${BITVECTOR_TEST_TIMEOUT})
 
