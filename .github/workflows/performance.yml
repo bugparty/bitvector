@@ -1,4 +1,4 @@
-name: C++ CI
+name: Performance Benchmarks
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  benchmark:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,8 +16,6 @@ jobs:
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
       - name: Build
         run: cmake --build build --config Release
-      - name: Run tests
-        run: ctest --test-dir build --output-on-failure
       - name: Run benchmarks
         run: ./build/bitvector_benchmark --benchmark_min_time=0.01s
       - name: Dump benchmark assembly
