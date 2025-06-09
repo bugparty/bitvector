@@ -53,4 +53,37 @@ Architecture: x86_64
 CPU(s): 5
 Model name: Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz
 ```
+## API Reference
 
+Below is a quick guide to the main `bowen::BitVector` functions:
+
+- **`BitVector()`** – Construct an empty vector.
+- **`BitVector(size_t n, bool value = false)`** – Create a vector with `n` bits initialized to `value`.
+- **`operator[]`** – Access or modify a bit by index.
+- **`set_bit(size_t pos, bool value)`** – Set the bit at `pos` to `value`.
+- **`set_bit_true_unsafe(size_t pos)`** – Like `set_bit(pos, true)` but without bounds checking.
+- **`qset_bit_true_6_v2(size_t pos, size_t stride, size_t size)`** – Use SIMD to quickly set bits in a stride pattern.
+- **`set_bit_true_6(size_t pos, size_t stride)`** – Set six bits starting from `pos` with the given `stride`.
+- **`incrementUntilZero(size_t& pos)`** – Advance `pos` to the first zero bit from its current value.
+- **`push_back(bool value)`** – Append a bit to the end of the vector.
+- **`reserve(size_t new_capacity)`** – Ensure capacity for at least `new_capacity` bits.
+- **`assign(size_t n, bool value)`** – Resize the vector to `n` bits and set each bit to `value`.
+- **`data()`** – Pointer to the underlying storage.
+- **`size()`** – Number of bits currently stored.
+- **`empty()`** – Check whether the vector is empty.
+- **`begin()` / `end()`** – Iterators for range-based loops.
+
+Example:
+
+```cpp
+#include "bitvector.hpp"
+using bowen::BitVector;
+
+int main() {
+    BitVector<> bv(8);      // all bits start as 0
+    bv.set_bit(3, true);    // set the fourth bit
+    bv.push_back(true);     // append one bit
+    size_t pos = 0;
+    bv.incrementUntilZero(pos);  // pos now points to the first zero bit
+}
+```
