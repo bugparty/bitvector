@@ -249,12 +249,12 @@ namespace bowen
             else
                 *ptr &= ~mask;
         }
-        inline void set_bit_true_unsafe(const size_t& pos) const {
+        inline void set_bit_true_unsafe(const size_t& pos) {
             BitType mask = 1UL << (pos % WORD_BITS);
             BitType * ptr = &m_data[pos / WORD_BITS];
             *ptr |= mask;
         }
-        inline void qset_bit_true_6_v2(size_t pos,const size_t stride,const size_t size) const {
+        inline void qset_bit_true_6_v2(size_t pos,const size_t stride,const size_t size) {
                 __m256i vStride = _mm256_set1_epi64x(stride);
                 __m256i vPos = _mm256_set_epi64x(pos + 3 * stride, pos + 2 * stride, pos + stride, pos);
 
